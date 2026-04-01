@@ -12,7 +12,20 @@
           "package_name": "com.example.news_chat_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "10955010656-ev6rpqf8lea0fbbnfgl4rl86crp7mdll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.news_chat_app",
+            "certificate_hash": "c9b76177a05eb9bfaa169643a7dd9e5a07679007"
+          }
+        },
+        {
+          "client_id": "10955010656-kc1scqb7u6c249no9i5ka94mjjcoba5m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAK3k5TkwV2PT8VvoH9_RYRvVnQDSJxupM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10955010656-kc1scqb7u6c249no9i5ka94mjjcoba5m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "10955010656-ogm4e4d72jk9oepk8cic72gbjv54bf7h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.newsChatApp"
+              }
+            }
+          ]
         }
       }
     }
