@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "10955010656",
+    "project_id": "newschatapp-3a75a",
+    "storage_bucket": "newschatapp-3a75a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10955010656:android:172fd9b08027bdd2ad4905",
+        "android_client_info": {
+          "package_name": "com.example.news_chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK3k5TkwV2PT8VvoH9_RYRvVnQDSJxupM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
