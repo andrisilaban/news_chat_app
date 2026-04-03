@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:news_chat_app/firebase_options.dart';
-import 'package:news_chat_app/home/home_view.dart';
+import 'package:news_chat_app/view/auth_wrapper_view.dart';
+import 'package:news_chat_app/view/home_view.dart';
+import 'package:news_chat_app/view/login_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'News Chat App',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const HomeView(),
+      home: AuthWrapper(),
     );
   }
 }
