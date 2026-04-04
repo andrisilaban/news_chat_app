@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_chat_app/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:news_chat_app/features/chat/presentation/chat_view.dart';
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
 
 class HeadlineNewsDetailView extends HookWidget {
@@ -244,7 +247,17 @@ class HeadlineNewsDetailView extends HookWidget {
           ],
         ),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => ChatBloc(),
+                  child: const ChatView(),
+                ),
+              ),
+            );
+          },
           backgroundColor: Colors.transparent,
           elevation: 0,
           highlightElevation: 0,
