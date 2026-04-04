@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 // No intl import
 
 import 'package:news_chat_app/features/chat/models/chat_message.dart';
@@ -16,7 +16,6 @@ class ChatView extends HookWidget {
   Widget build(BuildContext context) {
     final textController = useTextEditingController();
     final scrollController = useScrollController();
-    final imagePicker = useMemoized(() => ImagePicker());
 
     void scrollToBottom() {
       if (scrollController.hasClients) {
@@ -41,13 +40,16 @@ class ChatView extends HookWidget {
 
     Future<void> pickAndSendImage() async {
       try {
-        final XFile? image = await imagePicker.pickImage(source: ImageSource.gallery);
-        if (image != null && context.mounted) {
-          context.read<ChatBloc>().add(ChatEvent.sendImage(image.path));
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.image,
+        );
+        
+        if (result != null && result.files.single.path != null && context.mounted) {
+          context.read<ChatBloc>().add(ChatEvent.sendImage(result.files.single.path!));
           scrollToBottom();
         }
       } catch (e) {
-        debugPrint('Error picking image: $e');
+        debugPrint('Error picking file: $e');
       }
     }
 
@@ -142,7 +144,7 @@ class ChatView extends HookWidget {
                             ),
                           );
                         }
-                        return _buildChatBubble(messages[index]);
+                        return _buildChatBubble(context, messages[index]);
                       },
                     );
                   },
@@ -220,7 +222,7 @@ class ChatView extends HookWidget {
     );
   }
 
-  Widget _buildChatBubble(ChatMessage message) {
+  Widget _buildChatBubble(BuildContext context, ChatMessage message) {
     final isUser = message.isUser;
     
     return Padding(
@@ -244,7 +246,7 @@ class ChatView extends HookWidget {
                 bottomRight: Radius.circular(isUser ? 4 : 16),
               ),
             ),
-            child: _buildBubbleContent(message, isUser),
+            child: _buildBubbleContent(context, message, isUser),
           ),
           const SizedBox(height: 6),
           Text(
@@ -259,19 +261,40 @@ class ChatView extends HookWidget {
     );
   }
 
-  Widget _buildBubbleContent(ChatMessage message, bool isUser) {
+  Widget _buildBubbleContent(BuildContext context, ChatMessage message, bool isUser) {
     if (message.imagePath != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(16),
-          topRight: const Radius.circular(16),
-          bottomLeft: Radius.circular(isUser ? 16 : 4),
-          bottomRight: Radius.circular(isUser ? 4 : 16),
-        ),
-        child: Image.file(
-          File(message.imagePath!),
-          width: 200,
-          fit: BoxFit.cover,
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Scaffold(
+                backgroundColor: Colors.black,
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  iconTheme: const IconThemeData(color: Colors.white),
+                ),
+                body: Center(
+                  child: InteractiveViewer(
+                    child: Image.file(File(message.imagePath!)),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(16),
+            topRight: const Radius.circular(16),
+            bottomLeft: Radius.circular(isUser ? 16 : 4),
+            bottomRight: Radius.circular(isUser ? 4 : 16),
+          ),
+          child: Image.file(
+            File(message.imagePath!),
+            width: 200,
+            fit: BoxFit.cover,
+          ),
         ),
       );
     }

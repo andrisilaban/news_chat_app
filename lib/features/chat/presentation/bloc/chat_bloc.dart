@@ -1,4 +1,4 @@
-import 'dart:math';
+// Removed dart:math
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -62,15 +62,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     final currentState = state;
     if (currentState is _Loaded) {
-      final mockReplies = [
-        "Sure, could you please provide your order number?",
-        "Thanks! I'll check the details for you.",
-        "I understand. Let me transfer you to a human agent.",
-        "Is there anything else I can help you with today?",
-        "Please wait a moment while I retrieve that information."
-      ];
-      
-      final replyText = mockReplies[Random().nextInt(mockReplies.length)];
+      // Find the last message sent by the user to determine the context
+      final lastUserMessage = currentState.messages.lastWhere(
+        (m) => m.isUser, 
+        orElse: () => ChatMessage(id: '', timestamp: DateTime.now(), isUser: true, text: '')
+      ).text?.toLowerCase() ?? '';
+
+      String replyText = "Maaf, saya tidak begitu mengerti. Boleh diperjelas atau ada hal lain terkait pesanan yang bisa saya bantu?";
+
+      // Rule-based NLP Matching
+      if (lastUserMessage.contains("halo") || lastUserMessage.contains("hai")) {
+        replyText = "Halo! Selamat datang di Chat Support. Ada yang bisa kami bantu hari ini?";
+      } else if (lastUserMessage.contains("pesan") || lastUserMessage.contains("order") || lastUserMessage.contains("lacak")) {
+        replyText = "Tentu, boleh minta nomor pesanan atau nomor resi Anda agar kami bisa segera melacaknya?";
+      } else if (RegExp(r'\d{4,}').hasMatch(lastUserMessage)) {
+        // user typed something with at least 4 digits (likely an order number)
+        replyText = "Terima kasih! Kami sedang memproses pengecekan untuk pesanan tersebut. Detailnya akan segera kami tampilkan.";
+      } else if (lastUserMessage.contains("harga") || lastUserMessage.contains("biaya")) {
+        replyText = "Untuk harga dan detail lebih lanjut, silakan merujuk pada halaman produk spesifik di menu aplikasi. Ada produk tertentu yang sedang dicari?";
+      } else if (lastUserMessage.contains("bantu") || lastUserMessage.contains("komplain") || lastUserMessage.contains("rusak")) {
+        replyText = "Kami mohon maaf atas ketidaknyamanannya. Bisa tolong lampirkan foto kendalanya? Agen kami juga akan segera mengambil alih percakapan ini.";
+      }
 
       final botMessage = ChatMessage(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
