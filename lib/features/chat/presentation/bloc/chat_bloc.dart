@@ -71,7 +71,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       String replyText = "Maaf, saya tidak begitu mengerti. Boleh diperjelas atau ada hal lain terkait pesanan yang bisa saya bantu?";
 
       // Rule-based NLP Matching
-      if (lastUserMessage.contains("halo") || lastUserMessage.contains("hai")) {
+      if (lastUserMessage.contains("hello, i need help with my order") || lastUserMessage == "hello") {
+        replyText = "Sure, could you please provide your order number?";
+      } else if (lastUserMessage.contains("0123456")) {
+        replyText = "Thanks! I'll check the details for you.";
+      } else if (lastUserMessage.contains("halo") || lastUserMessage.contains("hai")) {
         replyText = "Halo! Selamat datang di Chat Support. Ada yang bisa kami bantu hari ini?";
       } else if (lastUserMessage.contains("pesan") || lastUserMessage.contains("order") || lastUserMessage.contains("lacak")) {
         replyText = "Tentu, boleh minta nomor pesanan atau nomor resi Anda agar kami bisa segera melacaknya?";
