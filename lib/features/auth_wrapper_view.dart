@@ -22,7 +22,7 @@ class AuthWrapper extends StatelessWidget {
           return const HomeView();
         }
 
-        return LoginPage();
+        return LoginView();
       },
     );
   }

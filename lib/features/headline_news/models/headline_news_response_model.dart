@@ -30,6 +30,9 @@ class HeadlineNewsResponseModel {
         ? []
         : List<dynamic>.from(articles!.map((x) => x.toMap())),
   };
+
+  /// Convenience method to get the actual message and status
+  bool get isSuccess => articles != null;
 }
 
 class Article {

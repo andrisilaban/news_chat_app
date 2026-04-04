@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_chat_app/service/auth_service.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginView extends StatelessWidget {
+  LoginView({super.key});
 
   final AuthService authService = AuthService();
 
@@ -23,10 +23,7 @@ class LoginPage extends StatelessWidget {
             flex: 5,
             child: SizedBox(
               width: double.infinity,
-              child: Image.asset(
-                'assets/login.jpg',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/login.jpg', fit: BoxFit.cover),
             ),
           ),
 
@@ -284,4 +281,3 @@ class _GoogleGPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
