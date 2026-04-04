@@ -46,6 +46,7 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
           (r) async {
             if (r.isSuccess) {
               log('✅ HeadlineNewsBloc: successful');
+              emit(_Success(r));
             } else {
               log('❌ Empty HeadlineNewsBloc');
               emit(_Empty());

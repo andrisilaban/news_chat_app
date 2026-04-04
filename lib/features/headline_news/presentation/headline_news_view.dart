@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_chat_app/features/headline_news/presentation/bloc/headline_news_bloc.dart';
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
+import 'package:news_chat_app/features/headline_news_detail/presentation/headline_news_detail_view.dart';
 
-class HeadlineNewsView extends StatefulWidget {
+class HeadlineNewsView extends HookWidget {
   const HeadlineNewsView({super.key});
 
   @override
-  State<HeadlineNewsView> createState() => _HeadlineNewsViewState();
-}
-
-class _HeadlineNewsViewState extends State<HeadlineNewsView> {
-  final List<String> categories = [
-    'Latest',
-    'Politics',
-    'Tech',
-    'Sport',
-    'Entertainment',
-  ];
-  int selectedCategoryIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<HeadlineNewsBloc>().add(
-      const HeadlineNewsEvent.getHeadlineNews(category: 'Latest'),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final categories = [
+      'Latest',
+      'Politics',
+      'Tech',
+      'Sport',
+      'Entertainment',
+    ];
+    final selectedCategoryIndex = useState(0);
+
+    useEffect(() {
+      // Defer the add event until after the first frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Read BLoC directly from context
+        if (context.mounted) {
+          context.read<HeadlineNewsBloc>().add(
+            const HeadlineNewsEvent.getHeadlineNews(category: 'Latest'),
+          );
+        }
+      });
+      return null;
+    }, const []);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -113,13 +115,11 @@ class _HeadlineNewsViewState extends State<HeadlineNewsView> {
                             separatorBuilder: (context, index) =>
                                 const SizedBox(width: 12),
                             itemBuilder: (context, index) {
-                              final isActive = index == selectedCategoryIndex;
+                              final isActive = index == selectedCategoryIndex.value;
                               return GestureDetector(
                                 onTap: () {
-                                  if (selectedCategoryIndex != index) {
-                                    setState(() {
-                                      selectedCategoryIndex = index;
-                                    });
+                                  if (selectedCategoryIndex.value != index) {
+                                    selectedCategoryIndex.value = index;
                                     context.read<HeadlineNewsBloc>().add(
                                       HeadlineNewsEvent.getHeadlineNews(
                                         category: categories[index],
@@ -186,7 +186,11 @@ class _HeadlineNewsViewState extends State<HeadlineNewsView> {
                                             const SizedBox(height: 24),
                                         itemBuilder: (context, index) {
                                           final article = articles[index];
-                                          return _buildNewsItem(article);
+                                          return _buildNewsItem(
+                                            context, 
+                                            article, 
+                                            categories[selectedCategoryIndex.value]
+                                          );
                                         },
                                       );
                                     },
@@ -212,7 +216,7 @@ class _HeadlineNewsViewState extends State<HeadlineNewsView> {
     );
   }
 
-  Widget _buildNewsItem(Article article) {
+  Widget _buildNewsItem(BuildContext context, Article article, String category) {
     String timeAgo = "Unknown";
     if (article.publishedAt != null) {
       try {
@@ -230,61 +234,74 @@ class _HeadlineNewsViewState extends State<HeadlineNewsView> {
       }
     }
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Image
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            width: 100,
-            height: 100,
-            color: const Color(0xFFF3F4F6),
-            child: article.urlToImage != null
-                ? Image.network(
-                    article.urlToImage!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.image, color: Colors.grey),
-                  )
-                : const Icon(Icons.image, color: Colors.grey),
-          ),
-        ),
-        const SizedBox(width: 16),
-        // Title and Subtitle
-        Expanded(
-          child: SizedBox(
-            height: 100,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  article.title ?? 'No title',
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF111827),
-                    height: 1.3,
-                  ),
-                ),
-                Text(
-                  '${article.source?.name ?? "Unknown source"} · $timeAgo',
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF6B7280),
-                    fontWeight: FontWeight.w400,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HeadlineNewsDetailView(
+              article: article,
+              category: category,
             ),
           ),
-        ),
-      ],
+        );
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              width: 100,
+              height: 100,
+              color: const Color(0xFFF3F4F6),
+              child: article.urlToImage != null
+                  ? Image.network(
+                      article.urlToImage!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.image, color: Colors.grey),
+                    )
+                  : const Icon(Icons.image, color: Colors.grey),
+            ),
+          ),
+          const SizedBox(width: 16),
+          // Title and Subtitle
+          Expanded(
+            child: SizedBox(
+              height: 100,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    article.title ?? 'No title',
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF111827),
+                      height: 1.3,
+                    ),
+                  ),
+                  Text(
+                    '${article.source?.name ?? "Unknown source"} · $timeAgo',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF6B7280),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
