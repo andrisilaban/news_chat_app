@@ -20,17 +20,17 @@ mixin _$HeadlineNewsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function() getHeadlineNews,
+    required TResult Function(String category) getHeadlineNews,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function()? getHeadlineNews,
+    TResult? Function(String category)? getHeadlineNews,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function()? getHeadlineNews,
+    TResult Function(String category)? getHeadlineNews,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -117,7 +117,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function() getHeadlineNews,
+    required TResult Function(String category) getHeadlineNews,
   }) {
     return started();
   }
@@ -126,7 +126,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function()? getHeadlineNews,
+    TResult? Function(String category)? getHeadlineNews,
   }) {
     return started?.call();
   }
@@ -135,7 +135,7 @@ class _$StartedImpl implements _Started {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function()? getHeadlineNews,
+    TResult Function(String category)? getHeadlineNews,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -186,6 +186,8 @@ abstract class _$$GetHeadlineNewsImplCopyWith<$Res> {
     _$GetHeadlineNewsImpl value,
     $Res Function(_$GetHeadlineNewsImpl) then,
   ) = __$$GetHeadlineNewsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String category});
 }
 
 /// @nodoc
@@ -199,54 +201,83 @@ class __$$GetHeadlineNewsImplCopyWithImpl<$Res>
 
   /// Create a copy of HeadlineNewsEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? category = null}) {
+    return _then(
+      _$GetHeadlineNewsImpl(
+        category: null == category
+            ? _value.category
+            : category // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
 }
 
 /// @nodoc
 
 class _$GetHeadlineNewsImpl implements _GetHeadlineNews {
-  const _$GetHeadlineNewsImpl();
+  const _$GetHeadlineNewsImpl({required this.category});
+
+  @override
+  final String category;
 
   @override
   String toString() {
-    return 'HeadlineNewsEvent.getHeadlineNews()';
+    return 'HeadlineNewsEvent.getHeadlineNews(category: $category)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$GetHeadlineNewsImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$GetHeadlineNewsImpl &&
+            (identical(other.category, category) ||
+                other.category == category));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, category);
+
+  /// Create a copy of HeadlineNewsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetHeadlineNewsImplCopyWith<_$GetHeadlineNewsImpl> get copyWith =>
+      __$$GetHeadlineNewsImplCopyWithImpl<_$GetHeadlineNewsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() started,
-    required TResult Function() getHeadlineNews,
+    required TResult Function(String category) getHeadlineNews,
   }) {
-    return getHeadlineNews();
+    return getHeadlineNews(category);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
-    TResult? Function()? getHeadlineNews,
+    TResult? Function(String category)? getHeadlineNews,
   }) {
-    return getHeadlineNews?.call();
+    return getHeadlineNews?.call(category);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
-    TResult Function()? getHeadlineNews,
+    TResult Function(String category)? getHeadlineNews,
     required TResult orElse(),
   }) {
     if (getHeadlineNews != null) {
-      return getHeadlineNews();
+      return getHeadlineNews(category);
     }
     return orElse();
   }
@@ -284,7 +315,16 @@ class _$GetHeadlineNewsImpl implements _GetHeadlineNews {
 }
 
 abstract class _GetHeadlineNews implements HeadlineNewsEvent {
-  const factory _GetHeadlineNews() = _$GetHeadlineNewsImpl;
+  const factory _GetHeadlineNews({required final String category}) =
+      _$GetHeadlineNewsImpl;
+
+  String get category;
+
+  /// Create a copy of HeadlineNewsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetHeadlineNewsImplCopyWith<_$GetHeadlineNewsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -293,7 +333,7 @@ mixin _$HeadlineNewsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HeadlineNewsResponseModel bill) success,
+    required TResult Function(HeadlineNewsResponseModel response) success,
     required TResult Function() empty,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
@@ -301,7 +341,7 @@ mixin _$HeadlineNewsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HeadlineNewsResponseModel bill)? success,
+    TResult? Function(HeadlineNewsResponseModel response)? success,
     TResult? Function()? empty,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
@@ -309,7 +349,7 @@ mixin _$HeadlineNewsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HeadlineNewsResponseModel bill)? success,
+    TResult Function(HeadlineNewsResponseModel response)? success,
     TResult Function()? empty,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -408,7 +448,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HeadlineNewsResponseModel bill) success,
+    required TResult Function(HeadlineNewsResponseModel response) success,
     required TResult Function() empty,
     required TResult Function(String message) error,
   }) {
@@ -420,7 +460,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HeadlineNewsResponseModel bill)? success,
+    TResult? Function(HeadlineNewsResponseModel response)? success,
     TResult? Function()? empty,
     TResult? Function(String message)? error,
   }) {
@@ -432,7 +472,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HeadlineNewsResponseModel bill)? success,
+    TResult Function(HeadlineNewsResponseModel response)? success,
     TResult Function()? empty,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -533,7 +573,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HeadlineNewsResponseModel bill) success,
+    required TResult Function(HeadlineNewsResponseModel response) success,
     required TResult Function() empty,
     required TResult Function(String message) error,
   }) {
@@ -545,7 +585,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HeadlineNewsResponseModel bill)? success,
+    TResult? Function(HeadlineNewsResponseModel response)? success,
     TResult? Function()? empty,
     TResult? Function(String message)? error,
   }) {
@@ -557,7 +597,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HeadlineNewsResponseModel bill)? success,
+    TResult Function(HeadlineNewsResponseModel response)? success,
     TResult Function()? empty,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -620,7 +660,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
     $Res Function(_$SuccessImpl) then,
   ) = __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({HeadlineNewsResponseModel bill});
+  $Res call({HeadlineNewsResponseModel response});
 }
 
 /// @nodoc
@@ -636,12 +676,12 @@ class __$$SuccessImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? bill = freezed}) {
+  $Res call({Object? response = null}) {
     return _then(
       _$SuccessImpl(
-        freezed == bill
-            ? _value.bill
-            : bill // ignore: cast_nullable_to_non_nullable
+        null == response
+            ? _value.response
+            : response // ignore: cast_nullable_to_non_nullable
                   as HeadlineNewsResponseModel,
       ),
     );
@@ -651,14 +691,14 @@ class __$$SuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl(this.bill);
+  const _$SuccessImpl(this.response);
 
   @override
-  final HeadlineNewsResponseModel bill;
+  final HeadlineNewsResponseModel response;
 
   @override
   String toString() {
-    return 'HeadlineNewsState.success(bill: $bill)';
+    return 'HeadlineNewsState.success(response: $response)';
   }
 
   @override
@@ -666,12 +706,12 @@ class _$SuccessImpl implements _Success {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessImpl &&
-            const DeepCollectionEquality().equals(other.bill, bill));
+            (identical(other.response, response) ||
+                other.response == response));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(bill));
+  int get hashCode => Object.hash(runtimeType, response);
 
   /// Create a copy of HeadlineNewsState
   /// with the given fields replaced by the non-null parameter values.
@@ -686,11 +726,11 @@ class _$SuccessImpl implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HeadlineNewsResponseModel bill) success,
+    required TResult Function(HeadlineNewsResponseModel response) success,
     required TResult Function() empty,
     required TResult Function(String message) error,
   }) {
-    return success(bill);
+    return success(response);
   }
 
   @override
@@ -698,11 +738,11 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HeadlineNewsResponseModel bill)? success,
+    TResult? Function(HeadlineNewsResponseModel response)? success,
     TResult? Function()? empty,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(bill);
+    return success?.call(response);
   }
 
   @override
@@ -710,13 +750,13 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HeadlineNewsResponseModel bill)? success,
+    TResult Function(HeadlineNewsResponseModel response)? success,
     TResult Function()? empty,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(bill);
+      return success(response);
     }
     return orElse();
   }
@@ -763,9 +803,10 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements HeadlineNewsState {
-  const factory _Success(final HeadlineNewsResponseModel bill) = _$SuccessImpl;
+  const factory _Success(final HeadlineNewsResponseModel response) =
+      _$SuccessImpl;
 
-  HeadlineNewsResponseModel get bill;
+  HeadlineNewsResponseModel get response;
 
   /// Create a copy of HeadlineNewsState
   /// with the given fields replaced by the non-null parameter values.
@@ -819,7 +860,7 @@ class _$EmptyImpl implements _Empty {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HeadlineNewsResponseModel bill) success,
+    required TResult Function(HeadlineNewsResponseModel response) success,
     required TResult Function() empty,
     required TResult Function(String message) error,
   }) {
@@ -831,7 +872,7 @@ class _$EmptyImpl implements _Empty {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HeadlineNewsResponseModel bill)? success,
+    TResult? Function(HeadlineNewsResponseModel response)? success,
     TResult? Function()? empty,
     TResult? Function(String message)? error,
   }) {
@@ -843,7 +884,7 @@ class _$EmptyImpl implements _Empty {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HeadlineNewsResponseModel bill)? success,
+    TResult Function(HeadlineNewsResponseModel response)? success,
     TResult Function()? empty,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -971,7 +1012,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(HeadlineNewsResponseModel bill) success,
+    required TResult Function(HeadlineNewsResponseModel response) success,
     required TResult Function() empty,
     required TResult Function(String message) error,
   }) {
@@ -983,7 +1024,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(HeadlineNewsResponseModel bill)? success,
+    TResult? Function(HeadlineNewsResponseModel response)? success,
     TResult? Function()? empty,
     TResult? Function(String message)? error,
   }) {
@@ -995,7 +1036,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(HeadlineNewsResponseModel bill)? success,
+    TResult Function(HeadlineNewsResponseModel response)? success,
     TResult Function()? empty,
     TResult Function(String message)? error,
     required TResult orElse(),

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:news_chat_app/constants/api_endpoints.dart';
+import 'package:news_chat_app/constants/config.dart';
 import 'package:news_chat_app/constants/custom_http.dart';
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
 
@@ -11,16 +13,17 @@ part 'headline_news_bloc.freezed.dart';
 
 class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
   HeadlineNewsBloc() : super(_Initial()) {
-    on<HeadlineNewsEvent>((event, emit) async {
-      emit(_Loading());
+    on<_GetHeadlineNews>((event, emit) async {
+      emit(const _Loading());
 
-      log('🔐 HeadlineNewsBloc: Starting bill process...');
+      log('🔐 HeadlineNewsBloc: Starting process...');
 
       try {
+        final categoryQuery = event.category.toLowerCase();
+
         final response = await CustomHttp().request(
           endpoint:
-              "https://newsapi.org/v2/everything?q=business&language=id&sortBy=publishedAt&page=1&apikey=a08285274bd8432bbe6e98c94b193dd3",
-          // endpoint: ApiEndpoints.headlineNews,
+              "${ApiEndpoints.headlineNews}?q=$categoryQuery&language=id&sortBy=publishedAt&page=1&pageSize=10&apikey=${Config.apiKey}",
           method: HttpMethod.get,
           authType: TokenAuth.no,
           fromJson: (json) => HeadlineNewsResponseModel.fromMap(json),
@@ -43,13 +46,8 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
           (r) async {
             if (r.isSuccess) {
               log('✅ HeadlineNewsBloc: successful');
-              if (r.isSuccess) {
-                emit(_Success(r));
-              } else {
-                emit(_Empty());
-              }
             } else {
-              log('❌ Empty HeadlineNewsBloc: r.message');
+              log('❌ Empty HeadlineNewsBloc');
               emit(_Empty());
             }
           },

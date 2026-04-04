@@ -19,7 +19,7 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomeView();
+          return const HeadlineNewsView();
         }
 
         return LoginView();
