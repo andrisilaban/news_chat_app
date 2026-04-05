@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:news_chat_app/service/auth_service.dart';
 
 class LoginView extends StatelessWidget {
-  LoginView({super.key});
-
-  final AuthService authService = AuthService();
+  final AuthService authService;
+  LoginView({super.key, AuthService? authService})
+      : authService = authService ?? AuthService();
 
   void showError(BuildContext context, String message) {
     ScaffoldMessenger.of(
@@ -58,6 +58,7 @@ class LoginView extends StatelessWidget {
 
                   // Google Sign-In Button
                   _GoogleSignInButton(
+                    key: const Key('google_sign_in_button'),
                     onTap: () async {
                       try {
                         await authService.signInWithGoogle();
@@ -80,6 +81,7 @@ class LoginView extends StatelessWidget {
                     },
                     child: const Text(
                       'Continue as guest',
+                      key: Key('guest_sign_in_button'),
                       style: TextStyle(
                         fontSize: 15,
                         color: Color(0xFF7B52E0),
@@ -100,7 +102,7 @@ class LoginView extends StatelessWidget {
 
 // ── Google Sign-In Button ─────────────────────────────────────────────────────
 class _GoogleSignInButton extends StatelessWidget {
-  const _GoogleSignInButton({required this.onTap});
+  const _GoogleSignInButton({super.key, required this.onTap});
   final VoidCallback onTap;
 
   @override

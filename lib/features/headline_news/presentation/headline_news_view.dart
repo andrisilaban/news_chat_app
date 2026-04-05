@@ -177,6 +177,7 @@ class HeadlineNewsView extends HookWidget {
                                         );
                                       }
                                       return ListView.separated(
+                                        key: const Key('news_list'),
                                         padding: const EdgeInsets.only(
                                           left: 24,
                                           right: 24,
@@ -187,11 +188,12 @@ class HeadlineNewsView extends HookWidget {
                                             const SizedBox(height: 24),
                                         itemBuilder: (context, index) {
                                           final article = articles[index];
-                                          return _buildNewsItem(
-                                            context, 
-                                            article, 
-                                            categories[selectedCategoryIndex.value]
-                                          );
+                                            return _buildNewsItem(
+                                              context, 
+                                              article, 
+                                              categories[selectedCategoryIndex.value],
+                                              index: index,
+                                            );
                                         },
                                       );
                                     },
@@ -217,7 +219,7 @@ class HeadlineNewsView extends HookWidget {
     );
   }
 
-  Widget _buildNewsItem(BuildContext context, Article article, String category) {
+  Widget _buildNewsItem(BuildContext context, Article article, String category, {int? index}) {
     String timeAgo = "Unknown";
     if (article.publishedAt != null) {
       try {
@@ -236,6 +238,7 @@ class HeadlineNewsView extends HookWidget {
     }
 
     return GestureDetector(
+      key: index != null ? Key('news_item_$index') : null,
       onTap: () {
         Navigator.push(
           context,
@@ -338,6 +341,7 @@ class HeadlineNewsView extends HookWidget {
                   MaterialPageRoute(builder: (context) => const BookmarkView()),
                 );
               },
+              key: const Key('bookmark_nav_button'),
               icon: const Icon(
                 Icons.bookmark_outline,
                 color: Color(0xFF9CA3AF),

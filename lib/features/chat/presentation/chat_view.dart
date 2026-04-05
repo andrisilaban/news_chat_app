@@ -182,6 +182,7 @@ class ChatView extends HookWidget {
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: TextField(
+                        key: const Key('chat_input_field'),
                         controller: textController,
                         textInputAction: TextInputAction.send,
                         onSubmitted: (_) => sendMessage(),
@@ -198,6 +199,7 @@ class ChatView extends HookWidget {
                   
                   // Send Button
                   GestureDetector(
+                    key: const Key('chat_send_button'),
                     onTap: sendMessage,
                     child: Container(
                       width: 50,

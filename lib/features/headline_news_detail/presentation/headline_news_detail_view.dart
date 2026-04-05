@@ -216,6 +216,7 @@ class HeadlineNewsDetailView extends HookWidget {
                     );
 
                     return GestureDetector(
+                      key: const Key('bookmark_detail_button'),
                       onTap: () {
                         if (isBookmarked) {
                           context.read<BookmarkBloc>().add(
@@ -272,6 +273,7 @@ class HeadlineNewsDetailView extends HookWidget {
           ],
         ),
         child: FloatingActionButton(
+          key: const Key('chat_fab'),
           onPressed: () {
             Navigator.push(
               context,
