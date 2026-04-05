@@ -31,8 +31,8 @@ Aplikasi Flutter premium yang menggabungkan penjelajahan Berita real-time dengan
 
 ## 2. Petunjuk Instalasi (Installation)
 ### Prasyarat
-- **Versi Flutter**: ^3.24.0 (Pastikan berada di channel `stable`)
-- **Dart SDK**: ^3.5.0
+- **Versi Flutter**: ^3.38.7 (Pastikan berada di channel `stable`)
+- **Dart SDK**: ^3.10.7
 
 ### Langkah-langkah
 1. **Clone repositori**:
