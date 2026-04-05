@@ -4,7 +4,7 @@ import 'package:news_chat_app/service/auth_service.dart';
 class LoginView extends StatelessWidget {
   final AuthService authService;
   LoginView({super.key, AuthService? authService})
-      : authService = authService ?? AuthService();
+    : authService = authService ?? AuthService();
 
   void showError(BuildContext context, String message) {
     ScaffoldMessenger.of(
@@ -15,7 +15,9 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF7B52E0),
+      backgroundColor: const Color(
+        0xFFF59E0B,
+      ), // Matches the warm yellow/orange in the asset
       body: Column(
         children: [
           // ── TOP: Image ─────────────────────────────
