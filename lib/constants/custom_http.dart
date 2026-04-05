@@ -49,7 +49,7 @@ class CustomHttp {
         error: true,
         logPrint: (object) {
           developer.log(object.toString(), name: 'DIO');
-          print('[DIO] $object');
+          developer.log('[DIO] $object', name: 'DIO');
         },
       ),
     );

@@ -4,33 +4,32 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
+  bool _initialized = false;
 
   AuthService({FirebaseAuth? auth, GoogleSignIn? googleSignIn})
       : _auth = auth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.instance;
 
-  bool _initialized = false;
-
   Future<UserCredential?> signInWithGoogle() async {
-    if (!_initialized) {
-      await _googleSignIn.initialize();
-      _initialized = true;
+    try {
+      if (!_initialized) {
+        await _googleSignIn.initialize();
+        _initialized = true;
+      }
+
+      final GoogleSignInAccount googleUser =
+          await _googleSignIn.authenticate();
+
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth.idToken,
+      );
+
+      return await _auth.signInWithCredential(credential);
+    } catch (e) {
+      rethrow;
     }
-
-    final GoogleSignInAccount? googleUser = await _googleSignIn.authenticate();
-
-    if (googleUser == null) {
-      return null;
-    }
-
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth.idToken,
-    );
-
-    return await _auth.signInWithCredential(credential);
   }
 
   Future<UserCredential> signInAsGuest() async {

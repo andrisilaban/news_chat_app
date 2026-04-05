@@ -7,7 +7,6 @@ import 'package:news_chat_app/constants/database_helper.dart';
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
 import 'package:news_chat_app/main_test_wrapper.dart';
 import 'package:news_chat_app/service/auth_service.dart';
-import 'package:mocktail/mocktail.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

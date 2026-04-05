@@ -65,7 +65,9 @@ class LoginView extends StatelessWidget {
                       try {
                         await authService.signInWithGoogle();
                       } catch (e) {
-                        showError(context, e.toString());
+                        if (context.mounted) {
+                          showError(context, e.toString());
+                        }
                       }
                     },
                   ),
@@ -78,7 +80,9 @@ class LoginView extends StatelessWidget {
                       try {
                         await authService.signInAsGuest();
                       } catch (e) {
-                        showError(context, e.toString());
+                        if (context.mounted) {
+                          showError(context, e.toString());
+                        }
                       }
                     },
                     child: const Text(
@@ -120,7 +124,7 @@ class _GoogleSignInButton extends StatelessWidget {
           border: Border.all(color: const Color(0xFFE0E0E0), width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),

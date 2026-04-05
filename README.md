@@ -23,6 +23,10 @@ Aplikasi Flutter premium yang menggabungkan penjelajahan Berita real-time dengan
 | :---: | :---: | :---: |
 | <img src="screenshots/bookmark.png" width="250"> | <img src="screenshots/chat.png" width="250"> | <img src="screenshots/logout.png" width="250"> |
 
+| Politics | Tech | Sport | Entertainment |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/politics.png" width="250"> | <img src="screenshots/tech.png" width="250"> | <img src="screenshots/sport.png" width="250"> | <img src="screenshots/entertainment.png" width="250"> |
+
 ---
 
 ## 2. Petunjuk Instalasi (Installation)

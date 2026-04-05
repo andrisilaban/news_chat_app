@@ -149,7 +149,7 @@ class BookmarkView extends HookWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          '${article.source?.name ?? "Unknown"}',
+                          article.source?.name ?? "Unknown",
                           style: const TextStyle(
                             fontSize: 13,
                             color: Color(0xFF6B7280),
