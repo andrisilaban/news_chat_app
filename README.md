@@ -14,6 +14,17 @@ Aplikasi Flutter premium yang menggabungkan penjelajahan Berita real-time dengan
 
 ---
 
+## 📸 Screenshots
+| Login Page | News Dashboard | Detail News |
+| :---: | :---: | :---: |
+| <img src="screenshots/login.png" width="250"> | <img src="screenshots/news.png" width="250"> | <img src="screenshots/detail_news.png" width="250"> |
+
+| Bookmark | AI Support Chat | Profile & Logout |
+| :---: | :---: | :---: |
+| <img src="screenshots/bookmark.png" width="250"> | <img src="screenshots/chat.png" width="250"> | <img src="screenshots/logout.png" width="250"> |
+
+---
+
 ## 2. Petunjuk Instalasi (Installation)
 ### Prasyarat
 - **Versi Flutter**: ^3.24.0 (Pastikan berada di channel `stable`)
