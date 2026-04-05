@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_chat_app/features/bookmark/presentation/bloc/bookmark_bloc.dart';
 import 'package:news_chat_app/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:news_chat_app/features/chat/presentation/chat_view.dart';
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
@@ -41,6 +42,11 @@ class HeadlineNewsDetailView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    useEffect(() {
+      context.read<BookmarkBloc>().add(BookmarkEvent.checkStatus(article.url ?? ''));
+      return null;
+    }, [article.url]);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -202,21 +208,40 @@ class HeadlineNewsDetailView extends HookWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.bookmark,
-                      color: Colors.black,
-                      size: 22,
-                    ),
-                  ),
+                BlocBuilder<BookmarkBloc, BookmarkState>(
+                  builder: (context, state) {
+                    final isBookmarked = state.maybeWhen(
+                      success: (articles, isBookmarked) => isBookmarked ?? false,
+                      orElse: () => false,
+                    );
+
+                    return GestureDetector(
+                      onTap: () {
+                        if (isBookmarked) {
+                          context.read<BookmarkBloc>().add(
+                                BookmarkEvent.removeBookmark(article.url ?? ''),
+                              );
+                        } else {
+                          context.read<BookmarkBloc>().add(
+                                BookmarkEvent.addBookmark(category, article),
+                              );
+                        }
+                      },
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                          color: isBookmarked ? const Color(0xFFE85D25) : Colors.black,
+                          size: 22,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

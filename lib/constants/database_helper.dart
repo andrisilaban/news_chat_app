@@ -65,6 +65,21 @@ class DatabaseHelper {
         timestamp TEXT
       )
     ''');
+
+    // Bookmarks Table
+    await db.execute('''
+      CREATE TABLE bookmarks (
+        url TEXT PRIMARY KEY,
+        category TEXT,
+        author TEXT,
+        title TEXT,
+        description TEXT,
+        urlToImage TEXT,
+        publishedAt TEXT,
+        content TEXT,
+        source_name TEXT
+      )
+    ''');
   }
 
   // ==== USER PROFILE ====
@@ -164,5 +179,45 @@ class DatabaseHelper {
         timestamp: DateTime.parse(maps[i]['timestamp'] as String),
       );
     });
+  }
+
+  // ==== BOOKMARKS ====
+  Future<void> insertBookmark(String category, Article article) async {
+    final db = await database;
+    await db.insert(
+      'bookmarks',
+      {
+        'url': article.url,
+        'category': category,
+        'author': article.author,
+        'title': article.title,
+        'description': article.description,
+        'urlToImage': article.urlToImage,
+        'publishedAt': article.publishedAt,
+        'content': article.content,
+        'source_name': article.source?.name,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> deleteBookmark(String url) async {
+    final db = await database;
+    await db.delete('bookmarks', where: 'url = ?', whereArgs: [url]);
+  }
+
+  Future<List<Map<String, dynamic>>> getBookmarks() async {
+    final db = await database;
+    return await db.query('bookmarks', orderBy: 'publishedAt DESC');
+  }
+
+  Future<bool> isBookmarked(String url) async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.query(
+      'bookmarks',
+      where: 'url = ?',
+      whereArgs: [url],
+    );
+    return result.isNotEmpty;
   }
 }

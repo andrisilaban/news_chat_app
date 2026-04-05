@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_chat_app/features/headline_news/presentation/bloc/headline_news_bloc.dart';
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
 import 'package:news_chat_app/features/headline_news_detail/presentation/headline_news_detail_view.dart';
+import 'package:news_chat_app/features/bookmark_view.dart/presentation/bookmark_view.dart';
 
 class HeadlineNewsView extends HookWidget {
   const HeadlineNewsView({super.key});
@@ -212,7 +213,7 @@ class HeadlineNewsView extends HookWidget {
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
@@ -305,7 +306,7 @@ class HeadlineNewsView extends HookWidget {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  Widget _buildBottomNavigationBar(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 12, bottom: 24),
       decoration: const BoxDecoration(color: Colors.white),
@@ -331,7 +332,12 @@ class HeadlineNewsView extends HookWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const BookmarkView()),
+                );
+              },
               icon: const Icon(
                 Icons.bookmark_outline,
                 color: Color(0xFF9CA3AF),
