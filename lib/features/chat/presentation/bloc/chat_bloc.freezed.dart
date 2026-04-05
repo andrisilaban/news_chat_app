@@ -19,18 +19,21 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ChatEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
     required TResult Function(String text) sendMessage,
     required TResult Function(String imagePath) sendImage,
     required TResult Function() receiveBotReply,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
     TResult? Function(String text)? sendMessage,
     TResult? Function(String imagePath)? sendImage,
     TResult? Function()? receiveBotReply,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
     TResult Function(String text)? sendMessage,
     TResult Function(String imagePath)? sendImage,
     TResult Function()? receiveBotReply,
@@ -38,18 +41,21 @@ mixin _$ChatEvent {
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_SendMessage value) sendMessage,
     required TResult Function(_SendImage value) sendImage,
     required TResult Function(_ReceiveBotReply value) receiveBotReply,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_SendMessage value)? sendMessage,
     TResult? Function(_SendImage value)? sendImage,
     TResult? Function(_ReceiveBotReply value)? receiveBotReply,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_SendMessage value)? sendMessage,
     TResult Function(_SendImage value)? sendImage,
     TResult Function(_ReceiveBotReply value)? receiveBotReply,
@@ -75,6 +81,125 @@ class _$ChatEventCopyWithImpl<$Res, $Val extends ChatEvent>
 
   /// Create a copy of ChatEvent
   /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$LoadHistoryImplCopyWith<$Res> {
+  factory _$$LoadHistoryImplCopyWith(
+    _$LoadHistoryImpl value,
+    $Res Function(_$LoadHistoryImpl) then,
+  ) = __$$LoadHistoryImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoadHistoryImplCopyWithImpl<$Res>
+    extends _$ChatEventCopyWithImpl<$Res, _$LoadHistoryImpl>
+    implements _$$LoadHistoryImplCopyWith<$Res> {
+  __$$LoadHistoryImplCopyWithImpl(
+    _$LoadHistoryImpl _value,
+    $Res Function(_$LoadHistoryImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of ChatEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$LoadHistoryImpl implements _LoadHistory {
+  const _$LoadHistoryImpl();
+
+  @override
+  String toString() {
+    return 'ChatEvent.loadHistory()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoadHistoryImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
+    required TResult Function(String text) sendMessage,
+    required TResult Function(String imagePath) sendImage,
+    required TResult Function() receiveBotReply,
+  }) {
+    return loadHistory();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
+    TResult? Function(String text)? sendMessage,
+    TResult? Function(String imagePath)? sendImage,
+    TResult? Function()? receiveBotReply,
+  }) {
+    return loadHistory?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
+    TResult Function(String text)? sendMessage,
+    TResult Function(String imagePath)? sendImage,
+    TResult Function()? receiveBotReply,
+    required TResult orElse(),
+  }) {
+    if (loadHistory != null) {
+      return loadHistory();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_SendImage value) sendImage,
+    required TResult Function(_ReceiveBotReply value) receiveBotReply,
+  }) {
+    return loadHistory(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_SendImage value)? sendImage,
+    TResult? Function(_ReceiveBotReply value)? receiveBotReply,
+  }) {
+    return loadHistory?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_SendImage value)? sendImage,
+    TResult Function(_ReceiveBotReply value)? receiveBotReply,
+    required TResult orElse(),
+  }) {
+    if (loadHistory != null) {
+      return loadHistory(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LoadHistory implements ChatEvent {
+  const factory _LoadHistory() = _$LoadHistoryImpl;
 }
 
 /// @nodoc
@@ -147,6 +272,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
     required TResult Function(String text) sendMessage,
     required TResult Function(String imagePath) sendImage,
     required TResult Function() receiveBotReply,
@@ -157,6 +283,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
     TResult? Function(String text)? sendMessage,
     TResult? Function(String imagePath)? sendImage,
     TResult? Function()? receiveBotReply,
@@ -167,6 +294,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
     TResult Function(String text)? sendMessage,
     TResult Function(String imagePath)? sendImage,
     TResult Function()? receiveBotReply,
@@ -181,6 +309,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_SendMessage value) sendMessage,
     required TResult Function(_SendImage value) sendImage,
     required TResult Function(_ReceiveBotReply value) receiveBotReply,
@@ -191,6 +320,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_SendMessage value)? sendMessage,
     TResult? Function(_SendImage value)? sendImage,
     TResult? Function(_ReceiveBotReply value)? receiveBotReply,
@@ -201,6 +331,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_SendMessage value)? sendMessage,
     TResult Function(_SendImage value)? sendImage,
     TResult Function(_ReceiveBotReply value)? receiveBotReply,
@@ -296,6 +427,7 @@ class _$SendImageImpl implements _SendImage {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
     required TResult Function(String text) sendMessage,
     required TResult Function(String imagePath) sendImage,
     required TResult Function() receiveBotReply,
@@ -306,6 +438,7 @@ class _$SendImageImpl implements _SendImage {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
     TResult? Function(String text)? sendMessage,
     TResult? Function(String imagePath)? sendImage,
     TResult? Function()? receiveBotReply,
@@ -316,6 +449,7 @@ class _$SendImageImpl implements _SendImage {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
     TResult Function(String text)? sendMessage,
     TResult Function(String imagePath)? sendImage,
     TResult Function()? receiveBotReply,
@@ -330,6 +464,7 @@ class _$SendImageImpl implements _SendImage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_SendMessage value) sendMessage,
     required TResult Function(_SendImage value) sendImage,
     required TResult Function(_ReceiveBotReply value) receiveBotReply,
@@ -340,6 +475,7 @@ class _$SendImageImpl implements _SendImage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_SendMessage value)? sendMessage,
     TResult? Function(_SendImage value)? sendImage,
     TResult? Function(_ReceiveBotReply value)? receiveBotReply,
@@ -350,6 +486,7 @@ class _$SendImageImpl implements _SendImage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_SendMessage value)? sendMessage,
     TResult Function(_SendImage value)? sendImage,
     TResult Function(_ReceiveBotReply value)? receiveBotReply,
@@ -417,6 +554,7 @@ class _$ReceiveBotReplyImpl implements _ReceiveBotReply {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
     required TResult Function(String text) sendMessage,
     required TResult Function(String imagePath) sendImage,
     required TResult Function() receiveBotReply,
@@ -427,6 +565,7 @@ class _$ReceiveBotReplyImpl implements _ReceiveBotReply {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
     TResult? Function(String text)? sendMessage,
     TResult? Function(String imagePath)? sendImage,
     TResult? Function()? receiveBotReply,
@@ -437,6 +576,7 @@ class _$ReceiveBotReplyImpl implements _ReceiveBotReply {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
     TResult Function(String text)? sendMessage,
     TResult Function(String imagePath)? sendImage,
     TResult Function()? receiveBotReply,
@@ -451,6 +591,7 @@ class _$ReceiveBotReplyImpl implements _ReceiveBotReply {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_SendMessage value) sendMessage,
     required TResult Function(_SendImage value) sendImage,
     required TResult Function(_ReceiveBotReply value) receiveBotReply,
@@ -461,6 +602,7 @@ class _$ReceiveBotReplyImpl implements _ReceiveBotReply {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_SendMessage value)? sendMessage,
     TResult? Function(_SendImage value)? sendImage,
     TResult? Function(_ReceiveBotReply value)? receiveBotReply,
@@ -471,6 +613,7 @@ class _$ReceiveBotReplyImpl implements _ReceiveBotReply {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_SendMessage value)? sendMessage,
     TResult Function(_SendImage value)? sendImage,
     TResult Function(_ReceiveBotReply value)? receiveBotReply,
