@@ -85,11 +85,14 @@ class DatabaseHelper {
   // ==== USER PROFILE ====
   Future<void> saveUser(Map<String, dynamic> userMap) async {
     final db = await database;
-    await db.insert(
-      'user_profile',
-      userMap,
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    await db.transaction((txn) async {
+      await txn.delete('user_profile');
+      await txn.insert(
+        'user_profile',
+        userMap,
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    });
   }
 
   Future<Map<String, dynamic>?> getUser() async {

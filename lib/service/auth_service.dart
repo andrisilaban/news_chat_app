@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:news_chat_app/constants/database_helper.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
@@ -26,18 +27,41 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
 
-      return await _auth.signInWithCredential(credential);
+      final result = await _auth.signInWithCredential(credential);
+      
+      // Save profile to local DB
+      if (result.user != null) {
+        await DatabaseHelper().saveUser({
+          'uid': result.user!.uid,
+          'email': result.user!.email,
+          'displayName': result.user!.displayName,
+          'photoUrl': result.user!.photoURL,
+        });
+      }
+      
+      return result;
     } catch (e) {
       rethrow;
     }
   }
 
   Future<UserCredential> signInAsGuest() async {
-    return await _auth.signInAnonymously();
+    final result = await _auth.signInAnonymously();
+    
+    // Save guest profile
+    await DatabaseHelper().saveUser({
+      'uid': result.user!.uid,
+      'email': 'Guest',
+      'displayName': 'Guest User',
+      'photoUrl': null,
+    });
+    
+    return result;
   }
 
   Future<void> logout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
+    await DatabaseHelper().clearUser();
   }
 }

@@ -15,12 +15,9 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF59E0B,
-      ), // Matches the warm yellow/orange in the asset
+      backgroundColor: const Color(0xFFF59E0B),
       body: Column(
         children: [
-          // ── TOP: Image ─────────────────────────────
           Expanded(
             flex: 5,
             child: SizedBox(
@@ -28,8 +25,6 @@ class LoginView extends StatelessWidget {
               child: Image.asset('assets/login.jpg', fit: BoxFit.cover),
             ),
           ),
-
-          // ── BOTTOM: white rounded card ───────────────────────────────
           Expanded(
             flex: 6,
             child: Container(
@@ -58,40 +53,92 @@ class LoginView extends StatelessWidget {
                   ),
                   const SizedBox(height: 36),
 
-                  // Google Sign-In Button
-                  _GoogleSignInButton(
-                    key: const Key('google_sign_in_button'),
-                    onTap: () async {
-                      try {
-                        await authService.signInWithGoogle();
-                      } catch (e) {
-                        if (context.mounted) {
-                          showError(context, e.toString());
-                        }
-                      }
-                    },
+                  // Google Sign-In Button with Splash
+                  Container(
+                    width: double.infinity,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(32),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () async {
+                          try {
+                            await authService.signInWithGoogle();
+                          } catch (e) {
+                            if (context.mounted) {
+                              showError(context, e.toString());
+                            }
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(32),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(0xFFE0E0E0),
+                              width: 1.5,
+                            ),
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _GoogleLogo(size: 24),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Sign in with Google',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF1A1A2E),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
 
                   const Spacer(),
 
-                  // Continue as guest
-                  GestureDetector(
-                    onTap: () async {
-                      try {
-                        await authService.signInAsGuest();
-                      } catch (e) {
-                        if (context.mounted) {
-                          showError(context, e.toString());
+                  // Continue as guest with Splash
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () async {
+                        try {
+                          await authService.signInAsGuest();
+                        } catch (e) {
+                          if (context.mounted) {
+                            showError(context, e.toString());
+                          }
                         }
-                      }
-                    },
-                    child: const Text(
-                      'Continue as guest',
-                      key: Key('guest_sign_in_button'),
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFF7B52E0),
-                        fontWeight: FontWeight.w500,
+                      },
+                      borderRadius: BorderRadius.circular(8),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Text(
+                          'Continue as guest',
+                          key: Key('guest_sign_in_button'),
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF7B52E0),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -101,51 +148,6 @@ class LoginView extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// ── Google Sign-In Button ─────────────────────────────────────────────────────
-class _GoogleSignInButton extends StatelessWidget {
-  const _GoogleSignInButton({super.key, required this.onTap});
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 56,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(32),
-          border: Border.all(color: const Color(0xFFE0E0E0), width: 1.5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Google "G" logo drawn with CustomPaint
-            const _GoogleLogo(size: 24),
-            const SizedBox(width: 12),
-            const Text(
-              'Sign in with Google',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF1A1A2E),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
