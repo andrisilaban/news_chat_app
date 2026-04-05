@@ -5,6 +5,7 @@ import 'package:news_chat_app/features/headline_news/presentation/bloc/headline_
 import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
 import 'package:news_chat_app/features/headline_news_detail/presentation/headline_news_detail_view.dart';
 import 'package:news_chat_app/features/bookmark_view.dart/presentation/bookmark_view.dart';
+import 'package:news_chat_app/features/log_out_view/presentation/log_out_view.dart';
 
 class HeadlineNewsView extends HookWidget {
   const HeadlineNewsView({super.key});
@@ -350,7 +351,12 @@ class HeadlineNewsView extends HookWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LogOutView()),
+                );
+              },
               icon: const Icon(
                 Icons.person_outline,
                 color: Color(0xFF9CA3AF),

@@ -25,7 +25,7 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
 
         final response = await CustomHttp().request(
           endpoint:
-              "${ApiEndpoints.headlineNews}?q=$categoryQuery&language=id&sortBy=publishedAt&page=1&pageSize=10&apikey=${Config.apiKey}",
+              "${ApiEndpoints.headlineNews}?q=$categoryQuery&language=en&sortBy=publishedAt&page=1&pageSize=10&apikey=${Config.apiKey}",
           method: HttpMethod.get,
           authType: TokenAuth.no,
           fromJson: (json) => HeadlineNewsResponseModel.fromMap(json),
@@ -34,7 +34,9 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
         await response.fold(
           (l) async {
             log('❌ error HeadlineNewsBloc: $l — trying offline cache...');
-            final cachedArticles = await DatabaseHelper().getCachedNews(event.category);
+            final cachedArticles = await DatabaseHelper().getCachedNews(
+              event.category,
+            );
             if (cachedArticles.isNotEmpty) {
               log('📦 Serving from cache for category: ${event.category}');
               final offlineModel = HeadlineNewsResponseModel(
@@ -44,12 +46,19 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
               );
               emit(_Success(offlineModel));
             } else {
-              emit(_Error(message: 'No internet connection and no cached data available.'));
+              emit(
+                _Error(
+                  message:
+                      'No internet connection and no cached data available.',
+                ),
+              );
             }
           },
           (r) async {
             if (r.isSuccess) {
-              log('✅ HeadlineNewsBloc: successful — caching ${r.articles?.length ?? 0} articles');
+              log(
+                '✅ HeadlineNewsBloc: successful — caching ${r.articles?.length ?? 0} articles',
+              );
               // Cache to SQLite
               if (r.articles != null && r.articles!.isNotEmpty) {
                 await DatabaseHelper().cacheNews(event.category, r.articles!);
@@ -62,8 +71,12 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
           },
         );
       } on SocketException {
-        log('📡 No internet — loading from cache for category: ${event.category}');
-        final cachedArticles = await DatabaseHelper().getCachedNews(event.category);
+        log(
+          '📡 No internet — loading from cache for category: ${event.category}',
+        );
+        final cachedArticles = await DatabaseHelper().getCachedNews(
+          event.category,
+        );
         if (cachedArticles.isNotEmpty) {
           final offlineModel = HeadlineNewsResponseModel(
             status: 'ok',
@@ -72,13 +85,19 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
           );
           emit(_Success(offlineModel));
         } else {
-          emit(const _Error(message: 'No internet connection and no cached data available.'));
+          emit(
+            const _Error(
+              message: 'No internet connection and no cached data available.',
+            ),
+          );
         }
       } catch (e) {
         log('❌ HeadlineNewsBloc unexpected error: $e');
         // Try to serve from cache as last resort
         try {
-          final cachedArticles = await DatabaseHelper().getCachedNews(event.category);
+          final cachedArticles = await DatabaseHelper().getCachedNews(
+            event.category,
+          );
           if (cachedArticles.isNotEmpty) {
             final offlineModel = HeadlineNewsResponseModel(
               status: 'ok',
