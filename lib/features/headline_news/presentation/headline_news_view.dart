@@ -239,6 +239,7 @@ class HeadlineNewsView extends HookWidget {
 
     return GestureDetector(
       key: index != null ? Key('news_item_$index') : null,
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.push(
           context,

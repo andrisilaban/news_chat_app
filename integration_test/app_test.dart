@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
+import 'package:news_chat_app/constants/database_helper.dart';
+import 'package:news_chat_app/features/headline_news/models/headline_news_response_model.dart';
 import 'package:news_chat_app/main_test_wrapper.dart';
 import 'package:news_chat_app/service/auth_service.dart';
 import 'package:mocktail/mocktail.dart';
@@ -15,10 +17,22 @@ void main() {
     late MockGoogleSignIn mockGoogleSignIn;
     late AuthService mockAuthService;
 
-    setUp(() {
+    setUp(() async {
       mockAuth = MockFirebaseAuth();
       mockGoogleSignIn = MockGoogleSignIn();
       mockAuthService = AuthService(auth: mockAuth, googleSignIn: mockGoogleSignIn);
+
+      // Seed mock data to SQLite to ensure "Latest" category has content for the test
+      final dbHelper = DatabaseHelper();
+      await dbHelper.cacheNews('Latest', [
+        Article(
+          title: 'Test Article Title',
+          description: 'Test Description',
+          url: 'https://test.com',
+          publishedAt: DateTime.now().toIso8601String(),
+          source: Source(name: 'Test Source'),
+        ),
+      ]);
     });
 
     testWidgets('Full flow: Login -> Browse -> Bookmark -> Chat', (tester) async {
@@ -27,13 +41,20 @@ void main() {
         mockAuth: mockAuth,
         mockAuthService: mockAuthService,
       ));
-      await tester.pumpAndSettle();
+      
+      // Use pump() instead of pumpAndSettle() because of CircularProgressIndicator in AuthWrapper
+      await tester.pump(const Duration(seconds: 1));
 
       // 2. Login as Guest
       final guestButton = find.byKey(const Key('guest_sign_in_button'));
       expect(guestButton, findsOneWidget);
       await tester.tap(guestButton);
-      await tester.pumpAndSettle();
+      
+      // Wait for auth transition and news loading indicator to appear/disappear
+      // pumpAndSettle() will hang if a CircularProgressIndicator is spinning
+      for (int i = 0; i < 5; i++) {
+        await tester.pump(const Duration(seconds: 1));
+      }
 
       // Verify we are on HeadlineNewsView (Top News Indonesia text should be there)
       expect(find.textContaining('Top News'), findsOneWidget);
@@ -42,10 +63,16 @@ void main() {
       final newsList = find.byKey(const Key('news_list'));
       expect(newsList, findsOneWidget);
       
-      final firstNewsItem = find.byKey(const Key('news_item_0'));
+      // Find the specific article we seeded
+      final firstNewsItem = find.text('Test Article Title');
       expect(firstNewsItem, findsOneWidget);
+      
+      // Additional wait to be absolutely sure layout and animations are settled
+      await tester.pump(const Duration(seconds: 2));
       await tester.tap(firstNewsItem);
-      await tester.pumpAndSettle();
+      
+      // Wait for navigation transition to Detail View
+      await tester.pumpAndSettle(const Duration(seconds: 2)); 
 
       // Verify we are on Detail View
       expect(find.byKey(const Key('bookmark_detail_button')), findsOneWidget);
@@ -55,9 +82,6 @@ void main() {
       await tester.tap(bookmarkButton);
       await tester.pumpAndSettle();
       
-      // Since it's a toggle, we verify the icon or just that it doesn't crash
-      // In a real mock, we'd verify the database called insert.
-
       // 5. Open Chat
       final chatFab = find.byKey(const Key('chat_fab'));
       expect(chatFab, findsOneWidget);
@@ -68,7 +92,7 @@ void main() {
       final chatInput = find.byKey(const Key('chat_input_field'));
       expect(chatInput, findsOneWidget);
       await tester.enterText(chatInput, 'Hello, I need help with my order');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
 
       final sendButton = find.byKey(const Key('chat_send_button'));
       await tester.tap(sendButton);
@@ -77,7 +101,7 @@ void main() {
       // 7. Verify Message Sent & Bot Typing/Reply
       expect(find.text('Hello, I need help with my order'), findsOneWidget);
       
-      // Wait for bot reply (NLP)
+      // Wait for bot reply (NLP has a simulated delay)
       await tester.pump(const Duration(seconds: 3));
       await tester.pumpAndSettle();
       
